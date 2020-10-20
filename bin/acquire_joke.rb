@@ -10,9 +10,9 @@ class AcquireJoke
     {:joke => return_hash['joke'], :joke_id => return_hash["id"]}
   end
 
-  def self.old_joke(user)
-    Joke.all.shuffle.each do |joke|
-      return joke if user.jokes.any?(joke)
-    end
+  def self.search_joke(term)
+    resp = RestClient.get(URI_BASE << SEARCH << "#{term}", accept: 'json')
+    return_hash = JSON.parse(resp)
+    {:joke => return_hash['joke'], :joke_id => return_hash["id"]}
   end
 end
