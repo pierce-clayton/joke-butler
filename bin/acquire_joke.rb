@@ -5,6 +5,8 @@ class AcquireJoke
 
   def self.random_joke
     resp = RestClient.get(URI_BASE, accept: 'json')
-    {:joke => JSON.parse(resp)['joke']}
+    return_hash = JSON.parse(resp)
+    # binding.pry
+    {:joke => return_hash['joke'], :joke_id => return_hash["id"]}
   end
 end
