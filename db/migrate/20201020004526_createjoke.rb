@@ -3,6 +3,7 @@ class Createjoke < ActiveRecord::Migration[6.0]
     create_table :jokes do |column|
       column.string :joke
       column.string :joke_id
+      column.index :messages
     end
   end
 end

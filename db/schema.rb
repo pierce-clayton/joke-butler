@@ -10,11 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_20_004526) do
+ActiveRecord::Schema.define(version: 2020_10_20_205029) do
 
   create_table "jokes", force: :cascade do |t|
     t.string "joke"
     t.string "joke_id"
+    t.index "\"messages\"", name: "index_jokes_on_messages"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "user_id"
+    t.text "joke_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.index "\"messages\"", name: "index_users_on_messages"
   end
 
 end

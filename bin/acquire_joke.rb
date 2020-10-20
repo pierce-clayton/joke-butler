@@ -9,4 +9,10 @@ class AcquireJoke
     # binding.pry
     {:joke => return_hash['joke'], :joke_id => return_hash["id"]}
   end
+
+  def self.old_joke(user)
+    Joke.all.shuffle.each do |joke|
+      return joke if user.jokes.any?(joke)
+    end
+  end
 end

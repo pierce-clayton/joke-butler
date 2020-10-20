@@ -1,0 +1,3 @@
+class CraftMessage
+
+end
