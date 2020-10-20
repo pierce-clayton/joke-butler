@@ -11,27 +11,26 @@ def usave(user)
   user
 end
 
-def heard_joke?(user, joke)
-  !!user.messages.find_by(joke_id: joke.id)
-end
 
+def random_joke
+  Joke.new(AcquireJoke.random_joke)
+end
 clay = User.new({'name' => 'Clay'})
 usave(clay)
 
-joke = Joke.new(AcquireJoke.random_joke)
-joke2 = joke
-joke3 = Joke.new(AcquireJoke.search_joke('elephant'))
-puts '*' * 60
-jsave(joke)
-jsave(joke2)
-jsave(joke3)
-puts heard_joke?(clay, joke)
-puts heard_joke?(clay, joke2)
-puts heard_joke?(clay, joke3)
-Message.create({user_id: clay.id, joke_id: joke.id})
-Message.create({user_id: clay.id, joke_id: joke2.id})
-Message.create({user_id: clay.id, joke_id: joke3.id})
-# puts clay.messages
+joke = random_joke
+
+def tmaj(user, joke)
+  if user.heard_joke?(joke)
+    tmaj(user, random_joke)
+  else
+    joke = jsave(joke)
+    message = user.create_message(joke)
+    puts message.joke.joke
+  end
+
+end
+tmaj(clay, joke)
 puts '*' * 60
 # binding.pry
 # puts AcquireJoke.old_joke(clay)
