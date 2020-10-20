@@ -1,5 +1,6 @@
 require_relative '../config/environment'
+require_relative '../bin/acquire_joke'
 
 
 
-puts "HELLO WORLD"
+puts AcquireJoke.random_joke
