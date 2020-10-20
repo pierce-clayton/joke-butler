@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2020_10_20_004526) do
 
   create_table "jokes", force: :cascade do |t|
-    t.string "joke_id"
     t.string "joke"
   end
 

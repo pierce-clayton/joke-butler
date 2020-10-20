@@ -3,4 +3,7 @@ require_relative '../bin/acquire_joke'
 
 
 
-puts AcquireJoke.random_joke
+joke = Joke.create(AcquireJoke.random_joke)
+
+
+puts Joke.all
