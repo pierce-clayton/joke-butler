@@ -8,6 +8,12 @@ class Message < ActiveRecord::Base
   end
 
   def deliver_joke
-    puts self.joke.joke
+    puts joke.joke
+  rescue NoMethodError
+    # joke = user.jokes.sample
+    joke = AcquireJoke.random_joke
+    puts joke.joke
+    # binding.pry
+
   end
 end

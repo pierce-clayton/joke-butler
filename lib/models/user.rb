@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   end
 
   def create_message(joke)
+    # binding.pry
     Message.create({user_id: id, joke_id: joke.id})
   end
 end
