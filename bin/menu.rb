@@ -1,15 +1,13 @@
-
-require 'curses'
 require 'pry'
 require 'tty-box'
 require 'tty-font'
 require 'tty-prompt'
 
-#top_menu = ["New User", "Member Access", "Quit"]
-# "New User" sub menu: enter name > "Member Access"
-# "Member Access" sub menu: enter name > "Tell me a new joke.", "Re-tell an old one.", "Nevermind" > "Top Menu"
-# "Tell me a new joke." > iterates through local joke database and retrieves one user hasn't seen. If user has seen all these, acquire new joke from API.
-# "Re-tell an old one." > iterates through local joke database of THIS user and chooses random.
+require_relative '../config/environment'
+require_relative '../bin/acquire_joke'
+
+# Global Variable to keep user info
+$user = ""
 
 def prompt 
     TTY::Prompt.new
@@ -18,26 +16,25 @@ end
 def top_menu_arr
     ["New User", "Login", "Quit"]
 end
-#new_user = enter your name and it gets added to db
-#login = verifies your name in db > member_access
+
 def member_access_arr
-    ["New Joke", "Old Jokes", "Clear Joke Library", "Delete Account"]
+    ["New Joke", "Old Jokes", "Clear Joke Library", "Delete Account", "Quit"]
 end
 
 def new_user
-    username = prompt.ask("What is your name?") 
-    User.create({name: username})
+    username = prompt.ask("You're new here, what is your name?") 
+    $user = User.create({name: username})
     #new user gets added to db
 end
 
 def login
     user = prompt.ask("Please enter your name: ")
-    user = User.find_by(name: user)
-    user.nil? ? new_user : user
+    $user = User.find_by(name: user)
+    $user.nil? ? new_user : $user
 end
 
 def member_access 
-    prompt.select("Hello, how may I be of service?") do |menu|
+    prompt.select("Welcome back, how may I be of service?") do |menu|
         member_access_arr.each_with_index do |choice, index|
             menu.choice choice, index
         end
@@ -52,10 +49,47 @@ def main_menu
     end
 end
 
+case main_menu
+when 0 
+    new_user
+when 1
+    login
+when 2
+    system('clear')
+    return "Quit"
+end
 
-puts main_menu
+case member_access
+when 0 #new joke
+    $user.create_message(AcquireJoke.random_joke)
+when 1#old jokes
+    puts $user.jokes.shuffle[0].joke
+when 2#clear joke library
+    $user.jokes.destroy
+when 3#delete account
+    $user.destroy
+when 4
+    system('clear')
+    return "Quit"
+end
 
-puts member_access
+User.find_by(id: $user.id) ? member_access : "Goodbye"
+
+binding.pry
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
 
 
 
