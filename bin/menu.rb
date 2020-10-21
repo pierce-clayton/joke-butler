@@ -10,16 +10,17 @@ require_relative '../bin/acquire_joke'
 # Global Variable to keep user info
 jb_box = TTY::Box.frame(
     width: 40, height: 5, 
+    title: {top_left: "JOKE BUTLER"},
     border: {
         type: :thick,
         top_left: :corner_top_left,
         top_right: :corner_top_right,
         bottom_left: :corner_bottom_left,
         bottom_right: :corner_bottom_right
-    }, 
-    title: {top_left: "JOKE BUTLER"}) 
+    }
+) 
     
-    print jb_box
+print jb_box
 
 
 $user = ""
@@ -64,38 +65,58 @@ def main_menu
     end
 end
 
-case main_menu
-when 0 
-    new_user
-when 1
-    login
-when 2
-    system('clear')
-    return "Quit"
+def main_loop
+    case main_menu
+    when 0 
+        new_user
+        sleep (1)
+        main_loop
+    when 1
+        login
+        sleep(1)
+        member_loop
+    when 2
+        system('clear')
+        return "Quit"
+    end
 end
 
 
-case member_access
-when 0 #new joke
-    system('clear')
-    $user.create_message(AcquireJoke.random_joke)
-    sleep(3)
-    member_access
-when 1#old jokes
-    system('clear')
-    puts $user.jokes.shuffle[0].joke
-    member_access
-when 2#clear joke library
-    $user.jokes.destroy
-    member_access
-when 3#delete account
-    $user.destroy
-    main_menu
-when 4
-    system('clear')
-    return "Quit"
+def member_loop
+    case member_access
+    when 0 #new joke
+        system('clear')
+        $user.create_message(AcquireJoke.random_joke)
+        sleep(3)
+        system('clear')
+        member_loop
+    when 1#old jokes
+        system('clear')
+        puts $user
+        sleep(3)
+        system('clear')
+        member_loop
+    when 2#clear joke library
+        $user.jokes.destroy
+        system('clear')
+        puts "Clearing out your jokes"
+        sleep(3)
+        system('clear')
+        member_loop
+    when 3#delete account
+        $user.destroy
+        system('clear')
+        puts "Removing your membership"
+        sleep(3)
+        system('clear')
+        main_loop
+    when 4
+        system('clear')
+        return "Quit"
+    end
 end
 
+main_loop
 
 #User.find_by(id: $user.id) ? member_access : "Goodbye"
 
