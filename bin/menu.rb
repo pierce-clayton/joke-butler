@@ -17,11 +17,9 @@ jb_box = TTY::Box.frame(
         top_right: :corner_top_right,
         bottom_left: :corner_bottom_left,
         bottom_right: :corner_bottom_right
-    }
-) 
-    
-print jb_box
+    }) 
 
+print jb_box
 
 $user = ""
 
@@ -81,7 +79,6 @@ def main_loop
     end
 end
 
-
 def member_loop
     case member_access
     when 0 #new joke
@@ -115,6 +112,8 @@ def member_loop
         return "Quit"
     end
 end
+
+
 
 main_loop
 
