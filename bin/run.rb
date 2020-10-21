@@ -1,5 +1,6 @@
 require_relative '../config/environment'
 require_relative '../bin/acquire_joke'
+require_relative '../bin/joke_hash'
 
 
 
@@ -7,7 +8,9 @@ clay = User.create({'name' => 'Clay'})
 # clay = User.all[1]
 
 100.times do |time|
-  clay.create_message(AcquireJoke.random_joke)
+  joke = Joke.create(random_joke)
+  msg = Message.create({user_id: clay.id, joke_id: joke.id})
+  puts msg.joke.joke
   puts time
   sleep(0.7)
 end
