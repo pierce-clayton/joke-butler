@@ -1,18 +1,24 @@
 
 class AcquireJoke
-  URI_BASE = 'https://icanhazdadjoke.com'
-  SEARCH = '/search?term='
+  ICAN = 'https://icanhazdadjoke.com'
+  ICSEARCH = '/search?term='
 
   def self.random_joke
-    resp = RestClient.get(URI_BASE, accept: 'json')
+    resp = RestClient.get(ICAN, accept: 'json')
     return_hash = JSON.parse(resp)
+    random_joke unless return_hash['status'] == 200
     # binding.pry
-    {:joke => return_hash['joke'], :joke_id => return_hash["id"]}
+    joke = Joke.new({ joke: return_hash['joke'], joke_id: return_hash['id'] })
+    joke.save unless Joke.find_by(joke_id: joke['joke_id'])
+    joke
   end
 
   def self.search_joke(term)
-    resp = RestClient.get(URI_BASE << SEARCH << "#{term}", accept: 'json')
+    resp = RestClient.get(ICAN << ICSEARCH << term.to_s, accept: 'json')
     return_hash = JSON.parse(resp)
-    {:joke => return_hash['joke'], :joke_id => return_hash["id"]}
+    search_joke unless return_hash['status'] == 200
+    joke = Joke.new({ joke: return_hash['joke'], joke_id: return_hash['id'] })
+    joke.save unless Joke.find_by(joke_id: joke['joke_id'])
+    joke
   end
 end
