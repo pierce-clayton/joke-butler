@@ -9,17 +9,19 @@ require_relative '../bin/acquire_joke'
 
 # Global Variable to keep user info
 jb_box = TTY::Box.frame(
-    width: 40, height: 5, 
-    title: {top_left: "JOKE BUTLER"},
+    width: 60, height: 3, 
+    title: {top_left: "JOKE BUTLER", bottom_right: " at your service "},
     border: {
         type: :thick,
         top_left: :corner_top_left,
         top_right: :corner_top_right,
         bottom_left: :corner_bottom_left,
         bottom_right: :corner_bottom_right
-    }) 
+    })
 
 print jb_box
+
+
 
 $user = ""
 
@@ -96,14 +98,14 @@ def member_loop
     when 2#clear joke library
         $user.jokes.destroy
         system('clear')
-        puts "Clearing out your jokes"
+        puts "Clearing out your jokes..."
         sleep(3)
         system('clear')
         member_loop
     when 3#delete account
         $user.destroy
         system('clear')
-        puts "Removing your membership"
+        puts "Removing your membership..."
         sleep(3)
         system('clear')
         main_loop
@@ -112,8 +114,6 @@ def member_loop
         return "Quit"
     end
 end
-
-
 
 main_loop
 
