@@ -1,6 +1,9 @@
+
 require 'curses'
 require 'pry'
-
+require 'tty-box'
+require 'tty-font'
+require 'tty-prompt'
 
 #top_menu = ["New User", "Member Access", "Quit"]
 # "New User" sub menu: enter name > "Member Access"
@@ -8,40 +11,51 @@ require 'pry'
 # "Tell me a new joke." > iterates through local joke database and retrieves one user hasn't seen. If user has seen all these, acquire new joke from API.
 # "Re-tell an old one." > iterates through local joke database of THIS user and chooses random.
 
-Curses.init_screen
-Curses.start_color
-Curses.noecho
-top_menu = ["New User", "Member Access", "Nevermind"]
+def prompt 
+    TTY::Prompt.new
+end
 
-def draw_menu(top_menu, active_index = nil)
-    top_menu.each do |element, index|
-        top_menu.setpos(index + 1, 1)
-        top_menu.attrset(index == active_index ? Curses::A_REVERSE : Curses::A_NORMAL)
-        top_menu.addstr("#{element}")
+def top_menu_arr
+    ["New User", "Login", "Quit"]
+end
+#new_user = enter your name and it gets added to db
+#login = verifies your name in db > member_access
+def member_access_arr
+    ["New Joke", "Old Jokes", "Clear Joke Library", "Delete Account"]
+end
+
+def new_user
+    username = prompt.ask("What is your name?") 
+    User.create({name: username})
+    #new user gets added to db
+end
+
+def login
+    user = prompt.ask("Please enter your name: ")
+    user = User.find_by(name: user)
+    user.nil? ? new_user : user
+end
+
+def member_access 
+    prompt.select("Hello, how may I be of service?") do |menu|
+        member_access_arr.each_with_index do |choice, index|
+            menu.choice choice, index
+        end
     end
 end
 
-Curses.init_pair(1, Curses::COLOR_RED, Curses::COLOR_WHITE)
-Curses.color_pair(1)
-text1 = "Welcome. "
-x = (Curses.cols - text1.length) /2  
-y = Curses.lines/2
-Curses.setpos(y, 0)
-Curses.addstr(text1)
-Curses.addstr("How may I assist you?")
-Curses.refresh
+def main_menu 
+    prompt.select("Welcome, I am Joke Butler") do |menu|
+    top_menu_arr.each_with_index do |choice, index|
+        menu.choice choice, index
+        end
+    end
+end
 
 
-Curses.setpos(1, 0)
-Curses.addstr("")
+puts main_menu
 
-key = Curses.getch
-
-Curses.setpos(0, 0)
-Curses.addstr("You pressed #{key}!")
-
-Curses.refresh
-Curses.getch
+puts member_access
 
 
 
@@ -89,6 +103,37 @@ Curses.getch
 
 
 
+# THE BEGINNINGS OF A VERY BEGINNER CONSOLE BUT DUNNO WHAT I'M DOING. 
+
+# OPTIONS = ["New User", "Member Access", "Nevermind"]
+
+# Curses.init_screen
+
+# Curses.init_pair(1, Curses::COLOR_RED, Curses::COLOR_WHITE)
+# Curses.color_pair(1)
+
+# jb_tag = "Joke Butler, at your service"
+# height, width = 24, 64
+# top, left = (Curses.lines - height) /2, (Curses.cols - width) /2
+# win1 = Curses::Window.new(height, width, top, left)
+# win1.box("|", "-")
+# win1.setpos(0, (width - jb_tag.length)/2)
+
+# win1.addstr(jb_tag)
+# win1.refresh
+
+# win2 = win1.subwin(height - 6, width - 6, top + 4, left + 4)
+# win2.setpos(2, 3)
+# win2.attrset(Curses.color_pair(1) | Curses::A_NORMAL)
+# win2.addstr("Please choose from the following options: ")
+# win2 << "\n"
+# win2 << "\n| New User"
+# win2 << "\n| Member Access"
+# win2 << "\n| Nevermind"
+# win2.refresh
+# win2.getch
+# win2.clear
+# win1.close
 
 # ======================================================================================================
 #SOURCE: https://dev.to/nwdunlap17/ruby-console-applications-for-beginners-making-menus-with-curses-4n6p
