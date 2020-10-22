@@ -22,14 +22,16 @@ print "\n" * 3
 
 $user = ""
 $joke = ""
-
+$joke_interval = 4.5
 
 def prompt 
     TTY::Prompt.new
 end
 
 def new_user
-    username = prompt.ask("You're new here, what is your name?") 
+    username = prompt.ask("You're new here, what is your name?")
+    return $user if User.find_by(name: username)
+    
     $user = User.create({name: username})
     #new user gets added to db
 end
@@ -94,7 +96,7 @@ def member_loop
         $joke = Joke.create(random_joke)
         msg = Message.create({user_id: $user.id, joke_id: $joke.id})
         puts msg.joke.joke
-        sleep(3)
+        sleep($joke_interval)
         system('clear')
         member_loop
     when 1#old jokes
@@ -104,7 +106,7 @@ def member_loop
         rescue
         puts "You don't have any old jokes. Reloading menu."
         ensure
-        sleep(2)
+        sleep($joke_interval)
         system('clear')
         member_loop
         end
