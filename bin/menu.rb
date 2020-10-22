@@ -1,35 +1,21 @@
 require 'pry'
-require 'tty-box'
-require 'tty-font'
-require 'tty-prompt'
 
-require_relative '../config/environment'
-require_relative '../bin/acquire_joke'
-
-
-# Global Variable to keep user info
-jb_box = TTY::Box.frame(
-    width: 40, height: 5, 
-    border: {
-        type: :thick,
-        top_left: :corner_top_left,
-        top_right: :corner_top_right,
-        bottom_left: :corner_bottom_left,
-        bottom_right: :corner_bottom_right
-    }, 
-    title: {top_left: "JOKE BUTLER"}) 
-    
-    print jb_box
-
+def jb_text 
+  RubyFiglet::Figlet.new("Joke Butler")
+end
 
 $user = ""
+$joke = ""
+$joke_interval = 4.5
 
 def prompt 
     TTY::Prompt.new
 end
 
 def new_user
-    username = prompt.ask("You're new here, what is your name?") 
+    username = prompt.ask("You're new here, what is your name?")
+    return $user if User.find_by(name: username)
+
     $user = User.create({name: username})
     #new user gets added to db
 end
@@ -56,48 +42,91 @@ def main_menu_arr
     ["New User", "Login", "Quit"]
 end
 
-def main_menu 
+def main_menu   
     prompt.select("Greetings, I am Joke Butler") do |menu|
-    main_menu_arr.each_with_index do |choice, index|
-        menu.choice choice, index
+        main_menu_arr.each_with_index do |choice, index|
+            menu.choice choice, index
         end
     end
 end
 
-case main_menu
-when 0 
-    new_user
-when 1
-    login
-when 2
-    system('clear')
-    return "Quit"
+def main_loop
+  print jb_text
+  print "\n" * 3
+    case main_menu
+    when 0 
+        system('clear')
+        print jb_text
+        print "\n" * 3
+        new_user
+        sleep (1)
+        system('clear')
+        main_loop
+    when 1
+        system('clear')
+        print jb_text
+        print "\n" * 3
+        login
+        sleep(1)
+        system('clear')
+        member_loop
+    when 2
+        system('clear')
+        puts "Goodbye"
+    end
 end
 
-
-case member_access
-when 0 #new joke
-    system('clear')
-    $user.create_message(AcquireJoke.random_joke)
-    sleep(3)
-    member_access
-when 1#old jokes
-    system('clear')
-    puts $user.jokes.shuffle[0].joke
-    member_access
-when 2#clear joke library
-    $user.jokes.destroy
-    member_access
-when 3#delete account
-    $user.destroy
-    main_menu
-when 4
-    system('clear')
-    return "Quit"
+def member_loop
+    $user = User.find_by(id: $user.id)
+    print jb_text
+    print "\n" * 3
+    case member_access
+    when 0 #new joke
+        system('clear')
+        print jb_text
+        print "\n" * 3
+        $joke = Joke.create(random_joke)
+        msg = Message.create({user_id: $user.id, joke_id: $joke.id})
+        puts msg.joke.joke
+        sleep($joke_interval)
+        system('clear')
+        member_loop
+    when 1#old jokes
+        begin
+        system('clear')
+        print jb_text
+        print "\n" * 3
+        puts $user.jokes.sample.joke
+        rescue
+        puts "You don't have any old jokes. Reloading menu."
+        ensure
+        sleep($joke_interval)
+        system('clear')
+        member_loop
+        end
+    when 2#clear joke library
+        $user.jokes.destroy_all
+        system('clear')
+        print jb_text
+        print "\n" * 3
+        puts "Clearing out your jokes..."
+        sleep(2)
+        system('clear')
+        member_loop
+    when 3#delete account
+        $user.destroy
+        system('clear')
+        print jb_text
+        print "\n" * 3
+        puts "Removing your membership..."
+        sleep(2)
+        system('clear')
+        main_loop
+    when 4
+        system('clear')
+        # puts "Goodbye"
+    end
 end
-
-
-#User.find_by(id: $user.id) ? member_access : "Goodbye"
 
 
 
