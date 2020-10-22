@@ -6,17 +6,18 @@ require_relative '../bin/joke_hash'
 
 
 # Global Variable to keep user info
-jb_box = TTY::Box.frame(
-    width: 60, height: 3, 
-    title: {top_left: "JOKE BUTLER", bottom_right: " at your service "},
-    border: {
-        type: :thick,
-        top_left: :corner_top_left,
-        top_right: :corner_top_right,
-        bottom_left: :corner_bottom_left,
-        bottom_right: :corner_bottom_right
-    })
-print jb_box
+# jb_box = TTY::Box.frame(
+#     width: 60, height: 3, 
+#     title: {top_left: "JOKE BUTLER", bottom_right: " at your service "},
+#     border: {
+#         type: :thick,
+#         top_left: :corner_top_left,
+#         top_right: :corner_top_right,
+#         bottom_left: :corner_bottom_left,
+#         bottom_right: :corner_bottom_right
+#     }) 
+    
+# print jb_box
 
 $user = ""
 $joke = ""
@@ -42,6 +43,7 @@ def member_access_arr
     ["New Joke", "Old Jokes", "Clear Joke Library", "Delete Account", "Quit"]
 end
 
+
 def member_access 
     prompt.select("Welcome back #{$user.name}, how may I be of service?") do |menu|
         member_access_arr.each_with_index do |choice, index|
@@ -54,10 +56,11 @@ def main_menu_arr
     ["New User", "Login", "Quit"]
 end
 
-def main_menu 
+
+def main_menu   
     prompt.select("Greetings, I am Joke Butler") do |menu|
-    main_menu_arr.each_with_index do |choice, index|
-        menu.choice choice, index
+        main_menu_arr.each_with_index do |choice, index|
+            menu.choice choice, index
         end
     end
 end
@@ -74,7 +77,7 @@ def main_loop
         member_loop
     when 2
         system('clear')
-        return "Quit"
+        puts "Goodbye"
     end
 end
 
@@ -116,7 +119,7 @@ def member_loop
         main_loop
     when 4
         system('clear')
-        return "Quit"
+        puts "Goodbye"
     end
 end
 
