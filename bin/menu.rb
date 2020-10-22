@@ -1,10 +1,6 @@
 require 'pry'
 
 
-require_relative '../config/environment'
-require_relative '../bin/joke_hash'
-
-
 #Global Variable to keep user info
 jb_text = RubyFiglet::Figlet.new("Joke Butler")
 # jb_box = TTY::Box.frame(
@@ -73,12 +69,16 @@ end
 def main_loop
     case main_menu
     when 0 
+        system('clear')
         new_user
         sleep (1)
+        system('clear')
         main_loop
     when 1
+        system('clear')
         login
         sleep(1)
+        system('clear')
         member_loop
     when 2
         system('clear')
@@ -124,11 +124,11 @@ def member_loop
         main_loop
     when 4
         system('clear')
-        puts "Goodbye"
+        # puts "Goodbye"
     end
 end
 
-main_loop
+# main_loop
 
 #User.find_by(id: $user.id) ? member_access : "Goodbye"
 
