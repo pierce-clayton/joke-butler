@@ -2,7 +2,9 @@ require 'pry'
 
 
 #Global Variable to keep user info
-jb_text = RubyFiglet::Figlet.new("Joke Butler")
+def jb_text 
+  RubyFiglet::Figlet.new("Joke Butler")
+end
 # jb_box = TTY::Box.frame(
 #     width: 80, height: 10, 
 #     border: {
@@ -15,9 +17,9 @@ jb_text = RubyFiglet::Figlet.new("Joke Butler")
     
 #     end
     
-#print jb_box
-print jb_text 
-print "\n" * 3
+# #print jb_box
+# print jb_text 
+# print "\n" * 3
 
 
 $user = ""
@@ -31,7 +33,7 @@ end
 def new_user
     username = prompt.ask("You're new here, what is your name?")
     return $user if User.find_by(name: username)
-    
+
     $user = User.create({name: username})
     #new user gets added to db
 end
@@ -69,15 +71,21 @@ def main_menu
 end
 
 def main_loop
+  print jb_text
+  print "\n" * 3
     case main_menu
     when 0 
         system('clear')
+        print jb_text
+        print "\n" * 3
         new_user
         sleep (1)
         system('clear')
         main_loop
     when 1
         system('clear')
+        print jb_text
+        print "\n" * 3
         login
         sleep(1)
         system('clear')
@@ -90,9 +98,13 @@ end
 
 def member_loop
     $user = User.find_by(id: $user.id)
+    print jb_text
+    print "\n" * 3
     case member_access
     when 0 #new joke
         system('clear')
+        print jb_text
+        print "\n" * 3
         $joke = Joke.create(random_joke)
         msg = Message.create({user_id: $user.id, joke_id: $joke.id})
         puts msg.joke.joke
@@ -102,6 +114,8 @@ def member_loop
     when 1#old jokes
         begin
         system('clear')
+        print jb_text
+        print "\n" * 3
         puts $user.jokes.sample.joke
         rescue
         puts "You don't have any old jokes. Reloading menu."
@@ -113,6 +127,8 @@ def member_loop
     when 2#clear joke library
         $user.jokes.destroy_all
         system('clear')
+        print jb_text
+        print "\n" * 3
         puts "Clearing out your jokes..."
         sleep(2)
         system('clear')
@@ -120,6 +136,8 @@ def member_loop
     when 3#delete account
         $user.destroy
         system('clear')
+        print jb_text
+        print "\n" * 3
         puts "Removing your membership..."
         sleep(2)
         system('clear')
