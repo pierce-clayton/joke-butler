@@ -1,24 +1,34 @@
 # joke-butler
+
 A manager for your jokes to ensure you always hear fresh material, no matter what your mood is.
 
-**User Experience**
-The user should be able to:
-- Create an account
-- Get a random joke
-- Search for a joke by keyword
-- Hear an old joke they heard before.
-- Reset all the jokes
-- Delete their account
+**How to setup**
 
-**Features**
-The app has the following features:
-- Tracks the jokes shown to a user
-- Shows a unique joke if available
-- Uses local stored jokes for new users first.
-- Can search for a joke by keyword
+Clone this repository
 
-**Stretch Goal**
-- Get a Chuck Norris fact instead of a joke and store it as well.
-- Customized jokes by name.
-- Can favorite a joke
-- Can get joke from favorites
+```bash
+git clone https://github.com/technicholy/joke-butler.git
+cd joke-butler
+./setup
+./joke-butler
+```
+
+**How to use**
+
+The first screen is the login page. You have three choices
+- New User
+- Login
+- Exit
+
+You will need to create a user to start getting jokes. If you have not created a user when you select login, you will be prompted to create one then.
+
+After creating your user, please login and then you will be shown the Member Access screen
+
+**Member Access Features**
+
+- Get a random joke and add it to your library
+- Retrieve a joke from your library
+- Empty your joke library
+- Delete your account
+- Exit the program
+
