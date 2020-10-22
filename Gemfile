@@ -10,4 +10,4 @@ gem 'json'
 gem 'cowsay'
 gem 'tty-prompt'
 gem 'tty-box'
-
+gem 'ruby_figlet'

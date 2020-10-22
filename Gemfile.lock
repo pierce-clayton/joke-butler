@@ -46,6 +46,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     ruby2_keywords (0.0.2)
+    ruby_figlet (0.6.1)
     sinatra (2.1.0)
       mustermann (~> 1.0)
       rack (~> 2.2)
@@ -95,6 +96,7 @@ DEPENDENCIES
   pry
   require_all
   rest-client
+  ruby_figlet
   sinatra-activerecord
   sqlite3 (= 1.4)
   tty-box

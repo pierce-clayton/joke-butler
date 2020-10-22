@@ -5,19 +5,24 @@ require_relative '../config/environment'
 require_relative '../bin/joke_hash'
 
 
-# Global Variable to keep user info
+#Global Variable to keep user info
+jb_text = RubyFiglet::Figlet.new("Joke Butler")
 # jb_box = TTY::Box.frame(
-#     width: 60, height: 3, 
-#     title: {top_left: "JOKE BUTLER", bottom_right: " at your service "},
+#     width: 80, height: 10, 
 #     border: {
 #         type: :thick,
 #         top_left: :corner_top_left,
 #         top_right: :corner_top_right,
 #         bottom_left: :corner_bottom_left,
 #         bottom_right: :corner_bottom_right
-#     }) 
+#     })do 
     
-# print jb_box
+#     end
+    
+#print jb_box
+print jb_text 
+print "\n" * 3
+
 
 $user = ""
 $joke = ""
