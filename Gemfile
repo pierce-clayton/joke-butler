@@ -8,3 +8,6 @@ gem 'require_all'
 gem 'rest-client'
 gem 'json'
 gem 'cowsay'
+gem 'tty-prompt'
+gem 'tty-box'
+

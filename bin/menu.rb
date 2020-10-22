@@ -1,10 +1,8 @@
 require 'pry'
-require 'tty-box'
-require 'tty-font'
-require 'tty-prompt'
+
 
 require_relative '../config/environment'
-require_relative '../bin/acquire_joke'
+require_relative '../bin/joke_hash'
 
 
 # Global Variable to keep user info
@@ -18,12 +16,11 @@ jb_box = TTY::Box.frame(
         bottom_left: :corner_bottom_left,
         bottom_right: :corner_bottom_right
     })
-
 print jb_box
 
-
-
 $user = ""
+$joke = ""
+
 
 def prompt 
     TTY::Prompt.new
@@ -82,31 +79,39 @@ def main_loop
 end
 
 def member_loop
+    $user = User.find_by(id: $user.id)
     case member_access
     when 0 #new joke
         system('clear')
-        $user.create_message(AcquireJoke.random_joke)
+        $joke = Joke.create(random_joke)
+        msg = Message.create({user_id: $user.id, joke_id: $joke.id})
+        puts msg.joke.joke
         sleep(3)
         system('clear')
         member_loop
     when 1#old jokes
+        begin
         system('clear')
-        puts $user
-        sleep(3)
+        puts $user.jokes.sample.joke
+        rescue
+        puts "You don't have any old jokes. Reloading menu."
+        ensure
+        sleep(2)
         system('clear')
         member_loop
+        end
     when 2#clear joke library
-        $user.jokes.destroy
+        $user.jokes.destroy_all
         system('clear')
         puts "Clearing out your jokes..."
-        sleep(3)
+        sleep(2)
         system('clear')
         member_loop
     when 3#delete account
         $user.destroy
         system('clear')
         puts "Removing your membership..."
-        sleep(3)
+        sleep(2)
         system('clear')
         main_loop
     when 4
