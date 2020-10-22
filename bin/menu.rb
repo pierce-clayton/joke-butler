@@ -1,26 +1,8 @@
 require 'pry'
 
-
-#Global Variable to keep user info
 def jb_text 
   RubyFiglet::Figlet.new("Joke Butler")
 end
-# jb_box = TTY::Box.frame(
-#     width: 80, height: 10, 
-#     border: {
-#         type: :thick,
-#         top_left: :corner_top_left,
-#         top_right: :corner_top_right,
-#         bottom_left: :corner_bottom_left,
-#         bottom_right: :corner_bottom_right
-#     })do 
-    
-#     end
-    
-# #print jb_box
-# print jb_text 
-# print "\n" * 3
-
 
 $user = ""
 $joke = ""
@@ -48,7 +30,6 @@ def member_access_arr
     ["New Joke", "Old Jokes", "Clear Joke Library", "Delete Account", "Quit"]
 end
 
-
 def member_access 
     prompt.select("Welcome back #{$user.name}, how may I be of service?") do |menu|
         member_access_arr.each_with_index do |choice, index|
@@ -60,7 +41,6 @@ end
 def main_menu_arr
     ["New User", "Login", "Quit"]
 end
-
 
 def main_menu   
     prompt.select("Greetings, I am Joke Butler") do |menu|
@@ -147,10 +127,6 @@ def member_loop
         # puts "Goodbye"
     end
 end
-
-# main_loop
-
-#User.find_by(id: $user.id) ? member_access : "Goodbye"
 
 
 
